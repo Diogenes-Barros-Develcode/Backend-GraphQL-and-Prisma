@@ -6,6 +6,7 @@ import { Context } from "../context";
 import { SignUpInput } from "../dtos/inputs/signup-input";
 import { User } from "../dtos/models/user-model";
 import { UserAthenticated } from "../dtos/models/userAuthenticated-model";
+import { LoginInput } from "../dtos/inputs/login-input";
 
 @Resolver(() => User)
 export class UserResolver {
@@ -33,6 +34,7 @@ export class UserResolver {
       return users
     }
 
+
     @Mutation(() => User)
     async signUp(@Arg('data') data: SignUpInput, @Ctx() ctx: Context) {
         const hashedPassword = await hash(data.password, 10)
@@ -41,7 +43,7 @@ export class UserResolver {
     }
 
     @Mutation(() => UserAthenticated)
-    async login(@Arg('data') data: SignUpInput, @Ctx() ctx: Context) {
+    async login(@Arg('data') data: LoginInput, @Ctx() ctx: Context) {
         const user = await ctx.prisma.users.findUnique({ where: { email: data.email} })
 
         if(!user){
